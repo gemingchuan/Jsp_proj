@@ -26,10 +26,18 @@
 					<nav id="menu">
 						<h2>菜单</h2>
 						<ul>
-							<li><a href="index.html">主页</a></li>
-							<li><a href="login">登陆/注册</a></li>
-							<li><a href="favorite">收藏</a></li>
-							<li><a href="generic.html">退出</a></li>
+							<li><a href="/">主页</a></li>
+                            {% if current_user.is_authenticated%}
+                                <li><a href="/welcome">{{current_user.usr}}</a></li>
+                                <li><a href="/">收藏</a></li>
+                                <li><a href="/logout">登出</a></li>
+                            {%else%}
+                                 <li><a href="{{url_for('register')}}">注册</a></li>
+                                 <li><a href="{{url_for('login')}}">登录</a></li>
+                            {%endif%}
+
+
+
 						</ul>
 					</nav>
 
