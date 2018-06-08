@@ -4,7 +4,7 @@ import json
 
 from flask import Flask, redirect, url_for, render_template, request, flash
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, current_user, login_user, login_required, UserMixin
+from flask_login import LoginManager, current_user, login_user, login_required, UserMixin, logout_user
 
 
 from config import DevConfig, DatabaseConfig
@@ -54,7 +54,7 @@ def index():
 @app.route('/welcome',  methods=['GET'])
 @login_required
 def login_success():
-    return 'Hello!'
+    return render_template('welcome.html')
 
 
 @app.route('/login',  methods=['GET', 'POST'])
@@ -73,7 +73,7 @@ def login():
 
 
 @app.route('/register',  methods=['GET', 'POST'])
-def reg():
+def register():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
@@ -95,6 +95,17 @@ def reg():
                 print('committed!')
                 return redirect('/login')
     return render_template('register.html')
+
+
+@app.route('/logout/')
+@login_required
+def logout():
+    logout_user()  # 登出用户
+    return '''
+    已经退出登录 <a href='/'>回到主页</a>
+    
+    '''
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
