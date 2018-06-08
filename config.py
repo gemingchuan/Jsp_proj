@@ -14,4 +14,5 @@ class DevConfig(Config):
 
 class DatabaseConfig(Config):
     #
+    SECRET_KEY = '123456'
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
