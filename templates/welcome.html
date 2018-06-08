@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% if current_user.is_authenticated%}
+        <p>欢迎你, {{current_user.usr}}!</p>
+
+        <a href='/'>去主页</a>|<a href="#">重置密码</a>|<a href="{{url_for('logout')}}">登出</a>
+
+    {%else%}
+         <a href="{{url_for('main.register')}}">注册</a>
+         <a href="{{url_for('main.login')}}">登录</a>
+    {%endif%}
+</body>
+</html>
