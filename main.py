@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import json
 
 from flask import Flask, redirect, url_for, render_template, request, flash
@@ -37,7 +35,7 @@ login_manager.init_app(app)
 
 
 login_manager.login_view = "login"  # 定义登录的 视图
-login_manager.login_message = '请登录以访问此页面'  # 定义需要登录访问页面的提示消息
+login_manager.login_message = ''  # 定义需要登录访问页面的提示消息
 
 
 @login_manager.user_loader
@@ -63,9 +61,23 @@ def login():
         username = request.form.get('username')
         tmp_user = User.query.filter_by(usr=username).first()
         if not tmp_user:
-            flash('该用户不存在')
+            return '''
+               <script type="text/javascript">
+               window.alert("该用户不存在！")
+               window.location.replace("/login")
+               </script> 
+               <a href='/login'></a>
+
+               '''
         elif request.form.get('password') != tmp_user.pwd:
-            flash('密码错误')
+            return '''
+               <script type="text/javascript">
+               window.alert("密码错误！")
+                window.location.replace("/login")
+               </script> 
+               <a href='/'></a>
+
+               '''
         else:
             login_user(tmp_user, remember=True)
             return redirect('/welcome')
@@ -80,7 +92,13 @@ def register():
         tmp_user = User.query.filter_by(usr=username).first()
 
         if tmp_user:
-            flash('该用户已存在')
+            return '''
+               <script type="text/javascript">
+               window.alert("该用户已存在！请登录~")
+                window.location.replace("/login")
+               </script> 
+               <a href='/'></a>
+               '''
         #elif request.form.get('password') != user.pwd:
         #    flash('密码错误')
         else:
@@ -97,13 +115,18 @@ def register():
     return render_template('register.html')
 
 
+
 @app.route('/logout/')
 @login_required
 def logout():
     logout_user()  # 登出用户
     return '''
-    已经退出登录 <a href='/'>回到主页</a>
-    
+    <script type="text/javascript">
+    window.alert("已退出登陆！")
+    window.location.replace("/")
+    </script> 
+
+
     '''
 
 
